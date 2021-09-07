@@ -27,23 +27,24 @@ int main(int argc, char* argv[])
 	{
 		char* argument = argv[1];
 		char* c = strstr(argument, ".txt");
-		if (c)
+		if (c) // if it's a file
 		{
 			char buffer[255];
-			FILE* file = fopen(argument, "r");
+			FILE* inputFile = fopen(argument, "r");
 			FILE* outFile = fopen(OUTFILENAME, "w");
-			if (file && outFile)
+			
+			if (inputFile && outFile) // if the two files are sucessfuly linked, input files exists and out file was successfully created 
 			{
 				float result;
 				char resultString[MAXDIGITSNUM];
-				while (fgets(buffer, 255, file))
+				while (fgets(buffer, 255, inputFile)) // reading line after line until EOF
 				{
 					result = evaluate(buffer);
 					sprintf(resultString, "%f", result);
 					strcat(resultString, "\n");
 					fputs(resultString, outFile);
 				}
-				fclose(file);
+				fclose(inputFile);
 				fclose(outFile);
 				printf("Success ! Result is in %s file .\n", OUTFILENAME);
 				return 1;
@@ -138,9 +139,10 @@ int getPrecedence(int operator)
     int val1 -> first value of sentence
     int val2 -> second value of sentence
     int operator -> operator to apply
+	float * result -> reference to out result variable
 
     Returns:
-    float -> result of the operation
+    int -> number indicating the sentence was sucessfull calculated or not
 */
 int calculateSentence(float val1, float val2, int operator, float* result)
 {
@@ -167,6 +169,15 @@ int calculateSentence(float val1, float val2, int operator, float* result)
 	}
 }
 
+/* 
+    Calculates the result of a sentence. Ex: 3+3 
+
+    Parameters:
+    char c -> char to be converted
+
+    Returns:
+    float -> value representing the char in enum
+*/
 float convertToEnumOperation(char c)
 {
 	switch (c)
@@ -190,7 +201,13 @@ float convertToEnumOperation(char c)
 
 
 /*
+	Evaluates the expression in string and after give the result
 
+	Parameters:
+	char [] string  -> string to be evaluated. Ex "3+3-5"
+
+	Return:
+	float -> result of given expression
 
 */
 float evaluate(char string[])
@@ -244,7 +261,8 @@ float evaluate(char string[])
 			else
 			{
 				float prevOp = peek(operators);
-                // in case actual operator has bigger precedence than 
+                // in case actual operator has bigger precedence than previous operator just push it to stack, else
+				// calculate the previous operation and store result and operator
 				if (getPrecedence((int)enumOperator) > getPrecedence((int)prevOp) || prevOp == openParenthesis)
 				{
 					push(values, val);
@@ -265,13 +283,15 @@ float evaluate(char string[])
 		pos++;
 	}
 
+	//After finishing evaluating the string, use remaing operations with remaining values
 	while (!isEmpty(operators))
 	{
 		float prev = pop(values);
 		float operator = pop(operators);
 		if (!isEmpty(operators))
 		{
-			float prevOperator = peek(operators);
+			float prevOperator = peek(operators); // just looking the top, but not removing it
+			// comparing precedence of top two operators
 			if (getPrecedence((int)operator) > getPrecedence((int)prevOperator))
 			{
 				calculateSentence(prev, val, (int)operator, &val);
@@ -279,14 +299,12 @@ float evaluate(char string[])
 			}
 			else
 			{
-				float beforePrev = pop(values);
-				prevOperator = pop(operators);
+				float beforePrev = pop(values);// working with two top values of stack, val stay the same
+				prevOperator = pop(operators); //poping it if it has higher precedence
 				float result;
 				calculateSentence(beforePrev, prev, (int)prevOperator, &result);
-				push(operators, operator);
-				push(values, result);
-				push(values, val);
-				val = pop(values);
+				push(operators, operator); // push operator with lower precedence
+				push(values, result);// storing the result
 			}
 		}
 		else
