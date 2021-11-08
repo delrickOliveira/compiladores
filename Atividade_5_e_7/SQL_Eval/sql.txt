@@ -1,0 +1,15 @@
+SELECT * FROM TableName;
+SELECT ID FROM TableName;
+SELECT ID1, ID2 FROM TableName;
+SELECT ID1, ID2 FROM TableName1, TableName2;
+SELECT * FROM TABLENAME WHERE id1 = "3456";
+SELECT * FROM TABLENAME WHERE id1 = 3456 AND id2 = "3456";
+SELECT nome, idade FROM clientes WHERE id LIKE "asdoaks";
+SELECT * FROM TABLENAME WHERE id1 = 3456 OR id2 = "3456";
+SELECT * FROM TABLENAME WHERE id1 IN (245,342,243);
+SELECT id1, id2 FROM tablename1, tablename2 WHERE id1 BETWEEN 1 AND 3;
+SELECT id1 FROM tablename1, tablename2;
+SELECT id1, id2 FROM _tableidrandom1  WHERE id1 LIKE "asodkasok";
+UPDATE tablename1 SET field1 = value1, field2 = 1234 WHERE id1 = "abc";
+INSERT INTO Customers (CustomerName, ContactName, Address, City, PostalCode, Country) VALUES ('Cardinal', 'Tom B. Erichsen', 'Skagen 21', 'Stavanger', '4006', 'Norway'); 
+DELETE FROM Customers WHERE CustomerName='Alfreds Futterkiste';
