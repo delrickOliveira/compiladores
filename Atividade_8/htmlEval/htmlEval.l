@@ -49,7 +49,6 @@ void yyerror(char *s);
 \'[^\']*\'|\"[^\"]*\"									{return STRING;}
 [[:space:]]												;
 .														; 
-
 %%
 
 int yywrap()

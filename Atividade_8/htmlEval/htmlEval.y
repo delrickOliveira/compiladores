@@ -21,12 +21,10 @@ int yyparse();
 %token UL_LIST_O UL_LIST_C OL_LIST_O OL_LIST_C  LIST_O LIST_C
 %token BUTTON_O BUTTON_C
 
-
-
 %%
 
 HTML_PAGE:
-    DOCTYPE HTML{printf("Expressão Válida !\n"); YYACCEPT;}
+    DOCTYPE HTML{printf("Expressão Válida !\n");}
     ;
 
 HTML:

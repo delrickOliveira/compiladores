@@ -1,8 +1,9 @@
 /*
-	Calculadora v.4 - Lê de arquivos ou linha de comando
-	Jucimar Jr
+	Paku tokens definition
+	Delrick de Oliveira Freitas
 */
-
+%option caseless
+%option yylineno
 %{
 #define YYSTYPE double
 #include "paku.tab.h" 

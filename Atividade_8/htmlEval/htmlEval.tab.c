@@ -1153,7 +1153,7 @@ yyreduce:
     {
   case 2: /* HTML_PAGE: DOCTYPE HTML  */
 #line 29 "htmlEval.y"
-                {printf("Expressão Válida !\n"); YYACCEPT;}
+                {printf("Expressão Válida !\n");}
 #line 1158 "htmlEval.tab.c"
     break;
 

@@ -7,11 +7,11 @@
 #define YYSTYPE double
 #include <stdio.h>
 extern FILE* yyin;
+extern int yylineno;
 
 void yyerror(char *s);
 int yylex(void);      
 int yyparse();
-int count = 0;
 %}
 
 %token INT FLOAT DIV MULT PLUS MINUS ATRIBUITION IDENTIFIER NUMBER EOL PRINT
@@ -24,8 +24,8 @@ int count = 0;
 %%
 
 STATEMENT:
-	STATEMENT EXPRESSION EOL {printf("Sentença %d Válida \n", count+1); count++;}
-	|
+	STATEMENT EXPRESSION{printf("Sentença %d Válida \n", yylineno);}
+	| 
 	;
 
 TYPE:
@@ -37,6 +37,8 @@ EXPRESSION:
 	TYPE IDENTIFIER
 	|	IDENTIFIER ATRIBUITION ATRIB_EXP
 	|	PRINT P_LEFT IDENTIFIER P_RIGHT
+	|	EOL
+
 	;
 
 ATRIB_EXP:
@@ -54,13 +56,10 @@ ATRIB_EXP:
 	;
 
 
-	
-	
-
 %%
 void yyerror(char *s)
 {
-	printf("Error: %s in line %d \n", s, count);
+	printf("Error: %s in line %d \n", s, yylineno);
 }
 
 int main(int argc, char *argv[])
