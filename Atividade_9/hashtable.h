@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include "hashlist.h"
 
-
 typedef struct hashtable {
     int size;
     list **table;
