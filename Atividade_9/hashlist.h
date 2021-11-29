@@ -2,19 +2,12 @@
 #include <string.h>
 #include <stdlib.h>
 
-typedef struct Variable
-{
-    char * name;
-    int value;
-    int scope;
-    char* type
-} Variable;
 // structs
 typedef struct node {
     struct node *previous;
     struct node *next;
     char *key;
-    struct Variable *value;
+    char *value;
 } node;
 
 typedef struct list {
@@ -23,7 +16,7 @@ typedef struct list {
 } list;
 
 // functions
-list *listinit()
+list *newList()
 {
     list *newlist;
     newlist = malloc(sizeof (list));
@@ -41,7 +34,7 @@ list *listinit()
     return newlist;
 }
 
-void destroylist(list *oldlist)
+void destroyList(list *oldlist)
 {
     node *sentinel = oldlist->tail;
     node *iternode = oldlist->head;
@@ -55,7 +48,7 @@ void destroylist(list *oldlist)
     free(oldlist);
 }
 
-node *nodegen(char *key, Variable *value)
+node *newNode(char *key, char *value)
 { // make a new node
     node *newnode;
     newnode = malloc(sizeof (node));
@@ -64,7 +57,7 @@ node *nodegen(char *key, Variable *value)
     return newnode;
 }
 
-void listinsert(list *insertlist, node *toinsert)
+void insertNode(list *insertlist, node *toinsert)
 { // inserts a new item at the beginning
     toinsert->next = insertlist->head;
     insertlist->head->previous = toinsert;
@@ -72,7 +65,7 @@ void listinsert(list *insertlist, node *toinsert)
     insertlist->head = toinsert;
 }
 
-int listupdate(list *tosearch, char *key, char *value)
+int updateNode(list *tosearch, char *key, char *value)
 {
     node *iternode = tosearch->head;
     while (iternode != tosearch->tail) {
@@ -86,7 +79,7 @@ int listupdate(list *tosearch, char *key, char *value)
     return 0;
 }
 
-void listremove(list *curlist, node *toremove)
+void removeNode(list *curlist, node *toremove)
 { // remove a given node (use listsearch to find it)
     
     if (curlist->head == toremove) {
@@ -101,7 +94,7 @@ void listremove(list *curlist, node *toremove)
     }
 }
 
-node *listsearch(list *tosearch, char *key, char *value)
+node *searchNode(list *tosearch, char *key, char *value)
 {
     node *iternode = tosearch->head;
     while (iternode != tosearch->tail) {
@@ -114,7 +107,7 @@ node *listsearch(list *tosearch, char *key, char *value)
     return tosearch->tail;
 }
 
-node *listkeysearch(list *tosearch, char *key)
+node *searchNodeByKey(list *tosearch, char *key)
 {
     node *iternode = tosearch->head;
     while (iternode != tosearch->tail) {
@@ -127,7 +120,7 @@ node *listkeysearch(list *tosearch, char *key)
     return tosearch->tail;
 }
 
-int empty(list *tocheck)
+int isListEmpty(list *tocheck)
 {
     if (tocheck->head == tocheck->tail)
         return 1;
@@ -141,9 +134,10 @@ void printlist(list *toprint)
     node *iternode = toprint->head;
     if (iternode == toprint->tail)
         printf("empty list!\n");
-    while (iternode != toprint->tail) {
+    while (iternode != toprint->tail)
+    {
 	    printf("%s\t", iternode->key);
-	    printf("%s\n", iternode->value->name);
+	    printf("%s\n", iternode->value);
 	    iternode = iternode->next;
     }
 }

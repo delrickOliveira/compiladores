@@ -21,26 +21,26 @@ char *hash_lookup(hashtable *hashtab, unsigned char *key)
     int index;
     index = hash_index(hashtab, key);
     list *templist = hashtab->table[index];
-    if (empty(templist))
+    if (isListEmpty(templist))
         return "not found";
     else {
-        node *tempnode = listkeysearch(templist, key);
+        node *tempnode = searchNodeByKey(templist, key);
         return tempnode->value;
     }
 }
 
-void hash_insert(hashtable *hashtab, unsigned char *key, Variable *value)
+void hash_insert(hashtable *hashtab, unsigned char *key, char *value)
 { 
     int index = hash_index(hashtab, key);
     list *temp = hashtab->table[index];
-    listinsert(temp, nodegen(key, value));
+    insertNode(temp, newNode(key, value));
 }
 
-int hash_update(hashtable *hashtab, unsigned char *key, Variable *value)
+int hash_update(hashtable *hashtab, unsigned char *key, char *value)
 {
     int index = hash_index(hashtab, key);
     list *temp = hashtab->table[index];
-    return listupdate(temp, key, value);
+    return updateNode(temp, key, value);
 }
 
 hashtable *hash_init(int size)
@@ -52,7 +52,7 @@ hashtable *hash_init(int size)
 
     int i;
     for (i = 0; i < size; i++) {
-        hasharray[i] = listinit();
+        hasharray[i] = newList();
     }
 
     hashtab->table = hasharray;
@@ -64,7 +64,7 @@ void hash_destroy(hashtable *oldtable)
 { // destroy!!
     int i;
     for (i = 0; i < oldtable->size; i++) {
-        destroylist(oldtable->table[i]);
+        destroyList(oldtable->table[i]);
     }
     free(oldtable);
 }
@@ -76,7 +76,7 @@ void hash_print(hashtable *toprint)
     printf("keys:\tvalues:\n");
     for (i = 0; i < toprint->size; i++) {
         templist = toprint->table[i];
-        if (! (empty(templist))){            
+        if (! (isListEmpty(templist))){            
             printlist(templist);
         }
             
@@ -87,8 +87,8 @@ void hash_remove(hashtable *hashtab, unsigned char *key)
 { 
     int index = hash_index(hashtab, key);
     list *templist = hashtab->table[index];
-    if (! (empty(templist))) {
-        node *delnode = listkeysearch(templist, key);
-        listremove(templist, delnode);
+    if (! (isListEmpty(templist))) {
+        node *delnode = searchNodeByKey(templist, key);
+        removeNode(templist, delnode);
     }
 }
