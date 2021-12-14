@@ -1,0 +1,55 @@
+program: 
+    statements
+    ;
+
+block: 
+    O_KEY EOL statements C_KEY
+    ;
+
+statements: 
+    | statements statement
+    ;
+
+statement:
+    declaration
+    | attribution
+    | if_stmt
+    | whileStmt
+    | read_stmt
+    | print_stmt
+    | block
+    | EOL
+    ;
+
+if_stmt: 
+    IF P_LEFT expression P_RIGHT block EOL
+    | IF P_LEFT expression P_RIGHT block ELSE block EOL
+    ;
+
+whileStmt: 
+    WHILE P_LEFT expression P_RIGHT block EOL
+    ;
+
+attribution: 
+    IDENTIFIER EQUALS expression EOL 
+    ;
+
+expression:
+    NUMBER 
+    | IDENTIFIER 
+    | expression OPERATOR expression 
+    | P_LEFT expression P_RIGHT 
+    | NOT expression 
+    ;
+
+print_stmt:
+    PRINT P_LEFT IDENTIFIER P_RIGHT EOL 
+    | PRINT P_LEFT STRING P_RIGHT EOL 
+    ;
+read_stmt:
+    READ P_LEFT IDENTIFIER P_RIGHT EOL 
+    ;
+
+declaration:
+    TYPE IDENTIFIER EOL 
+    ;

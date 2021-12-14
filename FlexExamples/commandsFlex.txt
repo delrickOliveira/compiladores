@@ -1,0 +1,4 @@
+flex -o comp.lex.c comp.lex
+
+gcc -o comp comp.lex.c -lfl
+

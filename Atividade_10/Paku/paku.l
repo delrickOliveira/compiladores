@@ -1,39 +1,36 @@
-/*
-	Paku tokens definition
-	Delrick de Oliveira Freitas
-*/
-%option caseless
-%option yylineno
 %{
-#define YYSTYPE double
+
 #include "paku.tab.h" 
 #include <stdlib.h>
-
-void yyerror(char *s); 
+void yyerror(char *s);
 %}
+%option yylineno
+
 
 %%
-
-"int"													{return INT;}
-"float"													{return FLOAT;}
-"/"														{return DIV;}
-"*"														{return MULT;}
-"+"														{return PLUS;}
-"-"														{return MINUS;}
-"="														{return ATRIBUITION;}
-"print"													{return PRINT;}
-[A-Za-z][A-Za-z0-9]*|[_][A-Za-z0-9]+					{return IDENTIFIER;}
-[0-9]+("."[0-9]+)? 										{ yylval = atof(yytext); return NUMBER; }
-[\n]													{ return EOL; }
-[(]														{ return P_LEFT;}
-[)]														{ return P_RIGHT;}
-[[:space:]]												;
-.														{ yyerror("Undefined token\n"); }
-
+"if"										{ return IF;}
+"else"                              		{ return ELSE;}
+"while"                             		{ return WHILE;}
+"{"                                 		{ return O_KEY;}
+"}"                                 		{ return C_KEY;}
+"="                                			{ return EQUALS;}
+"!"                                			{ return NOT;}
+">="|"<="|"=="|"!="|"&&"|"||"|[=<>+-/*%`]   { yylval.op = strdup(yytext); return OPERATOR; }
+[(]     									{ return P_LEFT; }
+[)]     									{ return P_RIGHT; }
+print										{ return PRINT; }
+read                                		{ return READ; }
+int                                 		{ return TYPE; }
+\"([^"\n]|\"\")+\"                  		{ yylval.name = strdup(yytext); return STRING; }
+[\-]?[0-9]+(\.[0-9]+)?		   				{ yylval.val = atof(yytext);return NUMBER; }
+[a-zA-Z_][_a-zA-Z0-9]*  					{ yylval.name = strdup(yytext); return IDENTIFIER; }
+\n                      					{ return EOL; }
+[[:space:]]									{ }
+#.*                                 		{/* comentario */}
+<<EOF>>                             		{ static int once = 0; return (once = !once) ? EOL : 0; }
 %%
 
 int yywrap()
 {
 	return 1;
 }
-

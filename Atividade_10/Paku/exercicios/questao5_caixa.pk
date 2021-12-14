@@ -1,0 +1,33 @@
+int numero
+print("Valor para sacar [10-600]: ")
+read(numero)
+
+int cem
+cem = (numero / 100)
+numero = numero - (cem*100)
+
+int cinquenta    
+cinquenta = (numero/50)
+numero = numero - (cinquenta*50)
+
+int dez
+dez = numero/10
+numero = numero - (dez*10)
+
+int cinco
+cinco = numero/5
+numero = numero - (cinco*5)
+
+int um
+um = numero
+    
+print("Notas R$100,00 = ")
+print(cem)
+print("Notas R$ 50,00 = ")
+print(cinquenta)
+print("Notas R$ 10,00 = ")
+print(dez)
+print("Notas R$  5,00 = ")
+print(cinco)
+print("Notas R$  1,00 = ")
+print(um)

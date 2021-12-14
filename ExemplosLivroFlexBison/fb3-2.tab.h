@@ -35,11 +35,11 @@
    especially those whose name start with YY_ or yy_.  They are
    private implementation details that can be changed or removed.  */
 
-#ifndef YY_YY_PAKU_TAB_H_INCLUDED
-# define YY_YY_PAKU_TAB_H_INCLUDED
+#ifndef YY_YY_FB3_2_TAB_H_INCLUDED
+# define YY_YY_FB3_2_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
-# define YYDEBUG 1
+# define YYDEBUG 0
 #endif
 #if YYDEBUG
 extern int yydebug;
@@ -54,24 +54,18 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    EQUALS = 258,                  /* EQUALS  */
-    EOL = 259,                     /* EOL  */
-    END = 260,                     /* END  */
-    P_LEFT = 261,                  /* P_LEFT  */
-    P_RIGHT = 262,                 /* P_RIGHT  */
-    PRINT = 263,                   /* PRINT  */
-    READ = 264,                    /* READ  */
-    IF = 265,                      /* IF  */
-    ELSE = 266,                    /* ELSE  */
-    NOT = 267,                     /* NOT  */
-    WHILE = 268,                   /* WHILE  */
-    O_KEY = 269,                   /* O_KEY  */
-    C_KEY = 270,                   /* C_KEY  */
-    STRING = 271,                  /* STRING  */
-    NUMBER = 272,                  /* NUMBER  */
-    IDENTIFIER = 273,              /* IDENTIFIER  */
-    TYPE = 274,                    /* TYPE  */
-    OPERATOR = 275                 /* OPERATOR  */
+    NUMBER = 258,                  /* NUMBER  */
+    NAME = 259,                    /* NAME  */
+    FUNC = 260,                    /* FUNC  */
+    EOL = 261,                     /* EOL  */
+    IF = 262,                      /* IF  */
+    THEN = 263,                    /* THEN  */
+    ELSE = 264,                    /* ELSE  */
+    WHILE = 265,                   /* WHILE  */
+    DO = 266,                      /* DO  */
+    LET = 267,                     /* LET  */
+    CMP = 268,                     /* CMP  */
+    UMINUS = 269                   /* UMINUS  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -80,14 +74,15 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 17 "paku.y"
+#line 15 "fb3-2.y"
 
-    char *name;
-    double val;
-    char* op;
-    struct AstElement* ast;
+  struct ast *a;
+  double d;
+  struct symbol *s;		/* which symbol */
+  struct symlist *sl;
+  int fn;			/* which function */
 
-#line 91 "paku.tab.h"
+#line 86 "fb3-2.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -95,23 +90,9 @@ typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_DECLARED 1
 #endif
 
-/* Location type.  */
-#if ! defined YYLTYPE && ! defined YYLTYPE_IS_DECLARED
-typedef struct YYLTYPE YYLTYPE;
-struct YYLTYPE
-{
-  int first_line;
-  int first_column;
-  int last_line;
-  int last_column;
-};
-# define YYLTYPE_IS_DECLARED 1
-# define YYLTYPE_IS_TRIVIAL 1
-#endif
-
 
 extern YYSTYPE yylval;
-extern YYLTYPE yylloc;
-int yyparse (struct AstElement** astDest);
 
-#endif /* !YY_YY_PAKU_TAB_H_INCLUDED  */
+int yyparse (void);
+
+#endif /* !YY_YY_FB3_2_TAB_H_INCLUDED  */

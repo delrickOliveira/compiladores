@@ -1,79 +1,118 @@
-/*
-	Paku Language Validator
-	Delrick de Oliveira Freitas 
-*/
-
 %{
-#define YYSTYPE double
 #include <stdio.h>
+#include "hashtable.h"
+#include "astgen.h"
 extern FILE* yyin;
-extern int yylineno;
 
-void yyerror(char *s);
-int yylex(void);      
+void yyerror(struct AstElement** astDest, char *s);
+int yylex(void);
 int yyparse();
+
+extern int yylineno;
+hashtable *htable;
 %}
 
-%token INT FLOAT DIV MULT PLUS MINUS ATRIBUITION IDENTIFIER NUMBER EOL PRINT
+%parse-param {struct AstElement** astDest}
 
+%union {
+    char *name;
+    double val;
+    char* op;
+    struct AstElement* ast;
+}
 
-%left PLUS MINUS
-%left MULT DIV
+%locations
+
+%token EQUALS EOL END
+%token P_LEFT P_RIGHT
+%token PRINT READ
+%token IF ELSE NOT WHILE
+%token O_KEY C_KEY 
+%token <name> STRING
 %left P_LEFT P_RIGHT
 
-%%
-
-STATEMENT:
-	STATEMENT EXPRESSION{printf("Sentença %d Válida \n", yylineno);}
-	| 
-	;
-
-TYPE:
-	INT
-	|	FLOAT
-	;
-
-EXPRESSION:
-	TYPE IDENTIFIER
-	|	IDENTIFIER ATRIBUITION ATRIB_EXP
-	|	PRINT P_LEFT IDENTIFIER P_RIGHT
-	|	EOL
-
-	;
-
-ATRIB_EXP:
-	 NUMBER
-	|	IDENTIFIER
-	|	NUMBER PLUS ATRIB_EXP
-	|	NUMBER MINUS ATRIB_EXP
-	|	NUMBER MULT ATRIB_EXP
-	|	NUMBER DIV ATRIB_EXP
-	|	IDENTIFIER PLUS ATRIB_EXP
-	|	IDENTIFIER MINUS ATRIB_EXP
-	|	IDENTIFIER MULT ATRIB_EXP
-	|	IDENTIFIER DIV ATRIB_EXP
-	|	P_LEFT ATRIB_EXP P_RIGHT
-	;
+%token <val> NUMBER 
+%token <name> IDENTIFIER TYPE
+%token <op> OPERATOR
+%type<ast> program block statement statements if_stmt attribution whileStmt print_stmt read_stmt declaration expression EOL
 
 
 %%
-void yyerror(char *s)
+
+program: statements { (*(struct AstElement**)astDest) = $1; YYACCEPT;};
+
+block: O_KEY EOL statements C_KEY { $$ = $3; };
+
+statements: {$$=0;}
+    | statements statement {$$=makeStatement($1, $2);}
+    ;
+
+statement:
+    declaration {$$=$1;}
+    | attribution {$$=$1;}
+    | if_stmt {$$=$1;}
+    | whileStmt {$$=$1;}
+    | read_stmt {$$=$1;}
+    | print_stmt {$$=$1;}
+    | block {$$=$1;}
+    | EOL {$$=makeBlank();}
+    ;
+
+if_stmt: IF P_LEFT expression P_RIGHT block EOL {$$=makeIf($3, $5, 0);}
+    | IF P_LEFT expression P_RIGHT block ELSE block EOL {$$=makeIf($3, $5, $7);}
+    ;
+
+whileStmt: WHILE P_LEFT expression P_RIGHT block EOL {$$=makeWhile($3, $5);};
+
+attribution: IDENTIFIER EQUALS expression EOL {$$=makeAssignment($1, $3);}
+    ;
+
+expression:
+    NUMBER {$$=makeExpByNum($1);}
+    | IDENTIFIER {$$=makeExpByName($1);}
+    | expression OPERATOR expression  {$$=makeExp($1, $3, $2);}
+    | P_LEFT expression P_RIGHT {$$=$2;}
+    | NOT expression {$$=makeNotExp($2);}
+    | OPERATOR expression {$$=makeUnaryExp($1,$2);}
+    ;
+
+print_stmt:
+    PRINT P_LEFT IDENTIFIER P_RIGHT EOL {$$=makePrint($3);}
+    | PRINT P_LEFT STRING P_RIGHT EOL {$$=makePrintString($3);}
+    ;
+read_stmt:
+    READ P_LEFT IDENTIFIER P_RIGHT EOL  {$$=makeRead($3);}
+    ;
+
+declaration:
+    TYPE IDENTIFIER EOL {$$=makeDeclaration($1,$2);}
+    ;
+
+%%
+
+#include "astexec.h"
+
+void yyerror(struct AstElement** astDest, char *s)
 {
-	printf("Error: %s in line %d \n", s, yylineno);
+	printf("linha: %d :Error: %s\n", yylineno, s);
 }
 
 int main(int argc, char *argv[])
 {
-	if (argc == 1)
-    {
-		yyparse();
-    }
+    struct AstElement *a = 0;
+    htable = hash_init(101);
+    // 1 para debug
+    #ifdef YYDEBUG
+        yydebug = 0;
+    #endif
 
-	if (argc == 2)
-	{
-    	yyin = fopen(argv[1], "r");
-		yyparse();
-    }
-
-	return 0;
+    int result;
+    yyin = fopen(argv[1], "r");
+    result = yyparse(&a);
+    if (result == 0){
+        printf("compilado com sucesso \n");
+        execStmt(htable, a);
+    }   
+    
+	return 0; 
 }

@@ -1,6 +1,6 @@
-#line 2 "paku.l.c"
+#line 2 "fb2-3.c"
 
-#line 4 "paku.l.c"
+#line 4 "fb2-3.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -163,27 +163,8 @@ extern FILE *yyin, *yyout;
 #define EOB_ACT_END_OF_FILE 1
 #define EOB_ACT_LAST_MATCH 2
     
-    /* Note: We specifically omit the test for yy_rule_can_match_eol because it requires
-     *       access to the local variable yy_act. Since yyless() is a macro, it would break
-     *       existing scanners that call yyless() from OUTSIDE yylex.
-     *       One obvious solution it to make yy_act a global. I tried that, and saw
-     *       a 5% performance hit in a non-yylineno scanner, because yy_act is
-     *       normally declared as a register variable-- so it is not worth it.
-     */
-    #define  YY_LESS_LINENO(n) \
-            do { \
-                int yyl;\
-                for ( yyl = n; yyl < yyleng; ++yyl )\
-                    if ( yytext[yyl] == '\n' )\
-                        --yylineno;\
-            }while(0)
-    #define YY_LINENO_REWIND_TO(dst) \
-            do {\
-                const char *p;\
-                for ( p = yy_cp-1; p >= (dst); --p)\
-                    if ( *p == '\n' )\
-                        --yylineno;\
-            }while(0)
+    #define YY_LESS_LINENO(n)
+    #define YY_LINENO_REWIND_TO(ptr)
     
 /* Return all but the first "n" matched characters back to the input stream. */
 #define yyless(n) \
@@ -342,6 +323,9 @@ void yyfree ( void *  );
 #define YY_AT_BOL() (YY_CURRENT_BUFFER_LVALUE->yy_at_bol)
 
 /* Begin user sect3 */
+
+#define yywrap() (/*CONSTCOND*/1)
+#define YY_SKIP_YYWRAP
 typedef flex_uint8_t YY_CHAR;
 
 FILE *yyin = NULL, *yyout = NULL;
@@ -371,8 +355,8 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-#define YY_NUM_RULES 20
-#define YY_END_OF_BUFFER 21
+#define YY_NUM_RULES 8
+#define YY_END_OF_BUFFER 9
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -380,32 +364,29 @@ struct yy_trans_info
 	flex_int32_t yy_verify;
 	flex_int32_t yy_nxt;
 	};
-static const flex_int16_t yy_accept[55] =
+static const flex_int16_t yy_accept[25] =
     {   0,
-        0,    0,   21,   20,   18,   17,    7,   20,   19,    8,
-       20,    9,   10,    8,   15,    8,    6,    8,   16,   16,
-       16,   16,   16,   16,    4,   20,    5,    8,    0,    0,
-       19,   15,    0,   16,   16,    1,   16,   16,   16,   16,
-       14,   15,   16,   13,   16,   16,   16,    2,   16,   12,
-       16,   11,    3,    0
+        0,    0,    0,    0,    9,    7,    6,    4,    5,    4,
+        2,    3,    0,    0,    2,    0,    0,    0,    0,    0,
+        0,    0,    1,    0
     } ;
 
 static const YY_CHAR yy_ec[256] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    2,    3,
-        2,    2,    2,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    2,    4,    5,    6,    1,    7,    8,    1,    9,
-       10,    7,    7,    7,   11,   12,    7,   13,   13,   13,
-       13,   13,   13,   13,   13,   13,   13,    1,    1,   14,
-       15,   16,    1,    1,   17,   17,   17,   17,   17,   17,
-       17,   17,   17,   17,   17,   17,   17,   17,   17,   17,
-       17,   17,   17,   17,   17,   17,   17,   17,   17,   17,
-        1,    1,    1,    1,   17,    7,   18,   17,   17,   19,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    2,    1,    4,    5,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    6,
+        1,    7,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    8,    9,
 
-       20,   21,   17,   22,   23,   17,   17,   24,   17,   25,
-       17,   26,   17,   27,   28,   29,   17,   17,   30,   17,
-       17,   17,   31,   32,   33,    1,    1,    1,    1,    1,
+       10,    1,    1,    1,   11,    1,    1,   12,    1,   13,
+        1,    1,    1,    1,    1,    1,   14,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -422,71 +403,45 @@ static const YY_CHAR yy_ec[256] =
         1,    1,    1,    1,    1
     } ;
 
-static const YY_CHAR yy_meta[34] =
+static const YY_CHAR yy_meta[15] =
     {   0,
-        1,    1,    2,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    3,    1,    1,    1,    3,    3,    3,    3,
-        3,    3,    3,    3,    3,    3,    3,    3,    3,    3,
-        1,    1,    1
+        1,    2,    3,    2,    1,    4,    3,    1,    1,    1,
+        1,    1,    1,    1
     } ;
 
-static const flex_int16_t yy_base[58] =
+static const flex_int16_t yy_base[30] =
     {   0,
-        0,    0,   73,   74,   74,   74,   57,   66,    0,   74,
-       62,   74,   74,   56,   22,   53,   52,   51,    0,   41,
-       15,   37,   43,   40,   74,   29,   74,   74,   55,   54,
-        0,   25,   45,    0,   29,    0,   27,   32,   36,   30,
-       47,   38,   30,    0,   24,   29,   23,    0,   16,    0,
-       22,    0,    0,   74,   40,   43,   36
+       38,    0,    4,   10,   40,   42,   42,   42,   42,    7,
+        0,   42,    8,   26,    0,   29,   22,   19,    7,    5,
+        2,    0,   42,   42,   19,   23,   27,   31,   34
     } ;
 
-static const flex_int16_t yy_def[58] =
+static const flex_int16_t yy_def[30] =
     {   0,
-       54,    1,   54,   54,   54,   54,   54,   55,   56,   54,
-       54,   54,   54,   54,   54,   54,   54,   54,   57,   57,
-       57,   57,   57,   57,   54,   54,   54,   54,   55,   54,
-       56,   54,   54,   57,   57,   57,   57,   57,   57,   57,
-       54,   54,   57,   57,   57,   57,   57,   57,   57,   57,
-       57,   57,   57,    0,   54,   54,   54
+       25,   26,   27,   27,   24,   24,   24,   24,   24,   24,
+       28,   24,   24,   24,   28,   24,   24,   24,   24,   24,
+       29,   29,   24,    0,   24,   24,   24,   24,   24
     } ;
 
-static const flex_int16_t yy_nxt[108] =
+static const flex_int16_t yy_nxt[57] =
     {   0,
-        4,    5,    6,    7,    8,    9,   10,   11,   12,   13,
-       14,   10,   15,   16,   17,   18,   19,   19,   19,   20,
-       19,   19,   21,   19,   19,   22,   23,   19,   19,   24,
-       25,   26,   27,   33,   32,   36,   33,   32,   34,   37,
-       29,   53,   29,   31,   52,   31,   51,   50,   49,   48,
-       42,   29,   47,   46,   45,   44,   43,   42,   29,   41,
-       28,   40,   39,   38,   35,   28,   28,   28,   32,   28,
-       30,   28,   54,    3,   54,   54,   54,   54,   54,   54,
-       54,   54,   54,   54,   54,   54,   54,   54,   54,   54,
-       54,   54,   54,   54,   54,   54,   54,   54,   54,   54,
-
-       54,   54,   54,   54,   54,   54,   54
+       24,   22,    9,   22,   10,   12,   12,   12,   13,   13,
+       12,   12,   12,   12,   21,   20,   12,   14,   14,    6,
+        6,    6,    6,    8,    8,    8,    8,   11,   11,   11,
+       11,   15,   19,   18,   15,   23,   17,   23,   16,   24,
+        7,    5,   24,   24,   24,   24,   24,   24,   24,   24,
+       24,   24,   24,   24,   24,   24
     } ;
 
-static const flex_int16_t yy_chk[108] =
+static const flex_int16_t yy_chk[57] =
     {   0,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,   15,   15,   21,   32,   32,   57,   21,
-       55,   51,   55,   56,   49,   56,   47,   46,   45,   43,
-       42,   41,   40,   39,   38,   37,   35,   33,   30,   29,
-       26,   24,   23,   22,   20,   18,   17,   16,   14,   11,
-        8,    7,    3,   54,   54,   54,   54,   54,   54,   54,
-       54,   54,   54,   54,   54,   54,   54,   54,   54,   54,
-       54,   54,   54,   54,   54,   54,   54,   54,   54,   54,
-
-       54,   54,   54,   54,   54,   54,   54
+        0,   22,    2,   21,    2,    3,    3,    3,   10,   13,
+        3,    4,    4,    4,   20,   19,    4,   10,   13,   25,
+       25,   25,   25,   26,   26,   26,   26,   27,   27,   27,
+       27,   28,   18,   17,   28,   29,   16,   29,   14,    5,
+        1,   24,   24,   24,   24,   24,   24,   24,   24,   24,
+       24,   24,   24,   24,   24,   24
     } ;
-
-/* Table of booleans, true if rule could match eol. */
-static const flex_int32_t yy_rule_can_match_eol[21] =
-    {   0,
-0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 
-    0,     };
 
 static yy_state_type yy_last_accepting_state;
 static char *yy_last_accepting_cpos;
@@ -502,16 +457,30 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "paku.l"
-#line 2 "paku.l"
+#line 1 "fb2-3.l"
+/* Companion source code for "flex & bison", published by O'Reilly
+ * Media, ISBN 978-0-596-15597-1
+ * Copyright (c) 2009, Taughannock Networks. All rights reserved.
+ * See the README file for license conditions and contact info.
+ * $Header: /home/johnl/flnb/code/RCS/fb2-3.l,v 2.3 2010/01/04 02:43:58 johnl Exp $
+ */
+/* fb2-3 skeleton for include files */
 
-#include "paku.tab.h" 
-#include <stdlib.h>
-void yyerror(char *s);
-#line 512 "paku.l.c"
-#line 513 "paku.l.c"
+#line 13 "fb2-3.l"
+  struct bufstack {
+    struct bufstack *prev;	/* previous entry */
+    YY_BUFFER_STATE bs;		/* saved buffer */
+    int lineno;			/* saved line number */
+    char *filename;		/* name of this file */
+    FILE *f;			/* current file */
+  } *curbs = 0;
+  char *curfilename;		/* name of current input file */
+  int newfile(char *fn);
+  int popfile(void);
+#line 481 "fb2-3.c"
 
 #define INITIAL 0
+#define IFILE 1
 
 #ifndef YY_NO_UNISTD_H
 /* Special case for "unistd.h", since it is non-ANSI. We include it way
@@ -689,6 +658,9 @@ extern int yylex (void);
 #endif
 
 #define YY_RULE_SETUP \
+	if ( yyleng > 0 ) \
+		YY_CURRENT_BUFFER_LVALUE->yy_at_bol = \
+				(yytext[yyleng - 1] == '\n'); \
 	YY_USER_ACTION
 
 /** The main scanner function which does all the work.
@@ -726,9 +698,9 @@ YY_DECL
 		}
 
 	{
-#line 10 "paku.l"
+#line 26 "fb2-3.l"
 
-#line 732 "paku.l.c"
+#line 704 "fb2-3.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -743,6 +715,7 @@ YY_DECL
 		yy_bp = yy_cp;
 
 		yy_current_state = (yy_start);
+		yy_current_state += YY_AT_BOL();
 yy_match:
 		do
 			{
@@ -755,13 +728,13 @@ yy_match:
 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 				{
 				yy_current_state = (int) yy_def[yy_current_state];
-				if ( yy_current_state >= 55 )
+				if ( yy_current_state >= 25 )
 					yy_c = yy_meta[yy_c];
 				}
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
 			++yy_cp;
 			}
-		while ( yy_base[yy_current_state] != 74 );
+		while ( yy_base[yy_current_state] != 42 );
 
 yy_find_action:
 		yy_act = yy_accept[yy_current_state];
@@ -773,16 +746,6 @@ yy_find_action:
 			}
 
 		YY_DO_BEFORE_ACTION;
-
-		if ( yy_act != YY_END_OF_BUFFER && yy_rule_can_match_eol[yy_act] )
-			{
-			int yyl;
-			for ( yyl = 0; yyl < yyleng; ++yyl )
-				if ( yytext[yyl] == '\n' )
-					
-    yylineno++;
-;
-			}
 
 do_action:	/* This label is used only to access EOF actions. */
 
@@ -797,111 +760,63 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 11 "paku.l"
-{ return IF;}
+#line 27 "fb2-3.l"
+{ BEGIN IFILE; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 12 "paku.l"
-{ return ELSE;}
+#line 29 "fb2-3.l"
+{ 
+                             { int c;
+			       while((c = input()) && c != '\n') ;
+			     }
+			     yylineno++;
+			     if(!newfile(yytext))
+                                yyterminate(); /* no such file */
+			     BEGIN INITIAL;
+                           }
 	YY_BREAK
 case 3:
+/* rule 3 can match eol */
 YY_RULE_SETUP
-#line 13 "paku.l"
-{ return WHILE;}
+#line 39 "fb2-3.l"
+{ fprintf(stderr, "%4d bad include line\n", yylineno);
+				     yyterminate();
+			   }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 14 "paku.l"
-{ return O_KEY;}
+#line 42 "fb2-3.l"
+{ fprintf(yyout, "%4d %s", yylineno, yytext); }
 	YY_BREAK
 case 5:
+/* rule 5 can match eol */
 YY_RULE_SETUP
-#line 15 "paku.l"
-{ return C_KEY;}
+#line 43 "fb2-3.l"
+{ fprintf(yyout, "%4d %s", yylineno++, yytext); }
 	YY_BREAK
 case 6:
+/* rule 6 can match eol */
 YY_RULE_SETUP
-#line 16 "paku.l"
-{ return EQUALS;}
+#line 44 "fb2-3.l"
+{ ECHO; yylineno++; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 17 "paku.l"
-{ return NOT;}
+#line 45 "fb2-3.l"
+{ ECHO; }
+	YY_BREAK
+case YY_STATE_EOF(INITIAL):
+case YY_STATE_EOF(IFILE):
+#line 46 "fb2-3.l"
+{ if(!popfile()) yyterminate(); }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 18 "paku.l"
-{ yylval.op = strdup(yytext); return OPERATOR; }
+#line 47 "fb2-3.l"
+YY_FATAL_ERROR( "flex scanner jammed" );
 	YY_BREAK
-case 9:
-YY_RULE_SETUP
-#line 19 "paku.l"
-{ return P_LEFT; }
-	YY_BREAK
-case 10:
-YY_RULE_SETUP
-#line 20 "paku.l"
-{ return P_RIGHT; }
-	YY_BREAK
-case 11:
-YY_RULE_SETUP
-#line 21 "paku.l"
-{ return PRINT; }
-	YY_BREAK
-case 12:
-YY_RULE_SETUP
-#line 22 "paku.l"
-{ return READ; }
-	YY_BREAK
-case 13:
-YY_RULE_SETUP
-#line 23 "paku.l"
-{ return TYPE; }
-	YY_BREAK
-case 14:
-YY_RULE_SETUP
-#line 24 "paku.l"
-{ yylval.name = strdup(yytext); return STRING; }
-	YY_BREAK
-case 15:
-YY_RULE_SETUP
-#line 25 "paku.l"
-{ yylval.val = atof(yytext);return NUMBER; }
-	YY_BREAK
-case 16:
-YY_RULE_SETUP
-#line 26 "paku.l"
-{ yylval.name = strdup(yytext); return IDENTIFIER; }
-	YY_BREAK
-case 17:
-/* rule 17 can match eol */
-YY_RULE_SETUP
-#line 27 "paku.l"
-{ return EOL; }
-	YY_BREAK
-case 18:
-/* rule 18 can match eol */
-YY_RULE_SETUP
-#line 28 "paku.l"
-{ }
-	YY_BREAK
-case 19:
-YY_RULE_SETUP
-#line 29 "paku.l"
-{/* comentario */}
-	YY_BREAK
-case YY_STATE_EOF(INITIAL):
-#line 30 "paku.l"
-{ static int once = 0; return (once = !once) ? EOL : 0; }
-	YY_BREAK
-case 20:
-YY_RULE_SETUP
-#line 31 "paku.l"
-ECHO;
-	YY_BREAK
-#line 905 "paku.l.c"
+#line 820 "fb2-3.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1184,6 +1099,7 @@ static int yy_get_next_buffer (void)
 	char *yy_cp;
     
 	yy_current_state = (yy_start);
+	yy_current_state += YY_AT_BOL();
 
 	for ( yy_cp = (yytext_ptr) + YY_MORE_ADJ; yy_cp < (yy_c_buf_p); ++yy_cp )
 		{
@@ -1196,7 +1112,7 @@ static int yy_get_next_buffer (void)
 		while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 			{
 			yy_current_state = (int) yy_def[yy_current_state];
-			if ( yy_current_state >= 55 )
+			if ( yy_current_state >= 25 )
 				yy_c = yy_meta[yy_c];
 			}
 		yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
@@ -1224,11 +1140,11 @@ static int yy_get_next_buffer (void)
 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 		{
 		yy_current_state = (int) yy_def[yy_current_state];
-		if ( yy_current_state >= 55 )
+		if ( yy_current_state >= 25 )
 			yy_c = yy_meta[yy_c];
 		}
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
-	yy_is_jam = (yy_current_state == 54);
+	yy_is_jam = (yy_current_state == 24);
 
 		return yy_is_jam ? 0 : yy_current_state;
 }
@@ -1266,10 +1182,6 @@ static int yy_get_next_buffer (void)
 		}
 
 	*--yy_cp = (char) c;
-
-    if ( c == '\n' ){
-        --yylineno;
-    }
 
 	(yytext_ptr) = yy_bp;
 	(yy_hold_char) = *yy_cp;
@@ -1348,10 +1260,7 @@ static int yy_get_next_buffer (void)
 	*(yy_c_buf_p) = '\0';	/* preserve yytext */
 	(yy_hold_char) = *++(yy_c_buf_p);
 
-	if ( c == '\n' )
-		
-    yylineno++;
-;
+	YY_CURRENT_BUFFER_LVALUE->yy_at_bol = (c == '\n');
 
 	return c;
 }
@@ -1819,9 +1728,6 @@ static int yy_init_globals (void)
      * This function is called from yylex_destroy(), so don't allocate here.
      */
 
-    /* We do not touch yylineno unless the option is enabled. */
-    yylineno =  1;
-    
     (yy_buffer_stack) = NULL;
     (yy_buffer_stack_top) = 0;
     (yy_buffer_stack_max) = 0;
@@ -1916,11 +1822,67 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 31 "paku.l"
+#line 47 "fb2-3.l"
 
 
-int yywrap()
+main(int argc, char **argv)
 {
-	return 1;
+  if(argc < 2) {
+    fprintf(stderr, "need filename\n");
+    return 1;
+  }
+  if(newfile(argv[1]))
+    yylex();
 }
+
+int
+  newfile(char *fn)
+{
+  FILE *f = fopen(fn, "r");
+  struct bufstack *bs = malloc(sizeof(struct bufstack));
+
+  /* die if no file or no room */
+  if(!f) { perror(fn); return 0; }
+  if(!bs) { perror("malloc"); exit(1); }
+
+  /* remember state */
+  if(curbs)curbs->lineno = yylineno;
+  bs->prev = curbs;
+
+  /* set up current entry */
+  bs->bs = yy_create_buffer(f, YY_BUF_SIZE);
+  bs->f = f;
+  bs->filename = fn;
+  yy_switch_to_buffer(bs->bs);
+  curbs = bs;
+  yylineno = 1;
+  curfilename = fn;
+  return 1;
+}
+
+int
+  popfile(void)
+{
+  struct bufstack *bs = curbs;
+  struct bufstack *prevbs;
+
+  if(!bs) return 0;
+
+  /* get rid of current entry */
+  fclose(bs->f);
+  yy_delete_buffer(bs->bs);
+
+  /* switch back to previous */
+  prevbs = bs->prev;
+  free(bs);
+
+  if(!prevbs) return 0;
+
+  yy_switch_to_buffer(prevbs->bs);
+  curbs = prevbs;
+  yylineno = curbs->lineno;
+  curfilename = curbs->filename;
+  return 1; 
+}
+
 

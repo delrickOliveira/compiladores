@@ -1,0 +1,39 @@
+print("Equacao do 2o grau da forma: ax^2 + bx + c")
+int a
+int raizUm
+int raizDois
+read(a)
+
+if( a == 0){
+    print("equacao invalida")
+}else{
+
+    int b
+    read(b)
+
+    int c
+    read(c)
+
+    int delta
+    delta = (b*b) - (4*a*c)
+    int rdelta 
+    rdelta = `delta 
+    
+    if(delta < 0){
+        print("a equacao nao possui raizes reais")
+    }else{
+        if(delta == 0){            
+            print("a equação possui apenas uma raiz real")
+            raizUm = ((-b) + rdelta) / (2*a)
+            print(raizUm)
+            
+        }else{
+            print("a equacao possui duas raizes reais")
+            raizUm = ((-b) + rdelta) / (2*a)
+            raizDois = ((-b) - rdelta) / (2*a)
+            print(raizUm)
+            print(raizDois)
+        }
+    }
+}
+

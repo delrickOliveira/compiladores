@@ -1,0 +1,17 @@
+int numero 
+int unidades
+int dezenas
+int centenas
+
+print("Digite um numero inteiro positivo:")
+read(numero)
+
+unidades = numero % 10
+numero = (numero - unidades)/10
+dezenas = numero % 10
+numero = (numero - dezenas)/10
+centenas = numero
+
+print(centenas)
+print(dezenas)
+print(unidades)
